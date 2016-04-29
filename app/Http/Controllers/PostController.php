@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 use View;
 use Auth;
+use File;
 use App\Tag;
 use App\Post;
 use App\Picture;
@@ -102,19 +103,24 @@ class PostController extends Controller
         $post->update($request->all());
         $tags = (empty($request->input('tags')))? [] : $request->input('tags');
         $post->tags()->sync($tags);
+        
         $message[] = 'success update';
         $im = $request->file('picture');
-        dd($im);
+        
         if ($request->input('delete_picture')) {
             $this->deletePicture($post);
             $message[] = 'success delete image';
         }
+        
+        
         if (!is_null($im)) {
             $this->deletePicture($post);
             $this->upload($im, $request->input('name'), $post->id);
             $message[] = 'success upload image';
         }
-        return redirect('post')->with(['message' => $message]);
+        
+        
+        return redirect('post')->with('message' , $message);
     }
     
     /**
@@ -160,7 +166,7 @@ class PostController extends Controller
      * @return bool
      */
     private function deletePicture(Post $p)
-    {
+    {   
         if (!is_null($p->picture)) {
             $fileName = public_path('uploads') . DIRECTORY_SEPARATOR . $p->picture->uri;
             if (File::exists($fileName))

@@ -3,7 +3,17 @@
 @section('content')
 
     @if(Session::has('message'))
-        <p class="notification">{{Session::get('message')}}</p>
+        @if(is_array(Session::get('message')))
+        
+            @foreach(Session::get('message') as $message)
+<p class="notification">{{$message}}</p>
+            @endforeach
+        
+        @else
+        
+<p class="notification">{{Session::get('message')}}</p>
+        
+        @endif
     @endif
 
     <table class="table">
@@ -24,8 +34,10 @@
             <tr>
                 <td>{{$post->status}}</td>
                 <td><a href="{{url('post',[$post->id, 'edit'])}}" class="">{{$post->title}}</a></td>
+                
                 <td>{{$post->user? $post->user->name : 'aucun auteur'}}</td>
-                <td>date de publication: {{$post->published_at->format('d/m/Y')}}</td>
+                <td>date de publication: {{$post->created_at->format('d/m/Y')}}</td>
+                
                 <td>
                     @if(!is_null($post->category))
                         {{$post->category->title}}
@@ -33,6 +45,8 @@
                         Non catégorisé
                     @endif
                 </td>
+               
+               
                 <td>
                     @forelse($post->tags as $tag)
                         <span class="tag">{{$tag->name}}</span>
@@ -40,6 +54,7 @@
                         aucun tag
                     @endforelse
                 </td>
+               
                 <td>
                     @if(!is_null($post->picture))
                     <div class="picture">
@@ -48,8 +63,11 @@
                     @endif
                 </td>
         
+               
+               
                 <td style="text-align:center;">
-                    <form class="destroy" method="POST" action="{{url('post', $post->id)}}">
+                    <form class="destroy" method="POST" action="{{url('post', $post->id)}}" Onsubmit="return attention();">
+                       
                         {{ method_field('DELETE') }}
                         {{ csrf_field() }}
                         <input type="hidden" name="title_h" value="{{$post->title}}">
@@ -71,3 +89,18 @@
     {{ $posts->links() }}
 
 @endsection
+
+
+<script>
+function attention()
+{
+	resultat=window.confirm('Attention, vous êtes sur le point de supprimer un post, voulez-vous continuer ?');
+	if (resultat==1)
+	{
+	}
+	else
+	{
+		return false;
+	}
+}
+</script>

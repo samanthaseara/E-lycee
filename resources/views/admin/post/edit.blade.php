@@ -6,7 +6,7 @@
     <p>{{Session::get('message')}}</p>
 @endif
 
-<form method="POST" action="{{url('post', $post->id)}}" >
+<form method="POST" action="{{url('post', $post->id)}}" enctype="multipart/form-data" >
     <div class="info">
         <input type="hidden" name="_method" value="PATCH">
         <input type="hidden" name="user_id" value="{{$userId}}">

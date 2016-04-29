@@ -32,8 +32,8 @@
         </div>
         @endif
 
-        <p class="content"> {{ nl2br(e($post->content)) }}</p>
-            <p><?php echo htmlspecialchars_decode($post->content); ?></p>
+        <!-- <p class="content"> {{ nl2br(e($post->content)) }}</p>-->
+            <p class="content"><?php echo htmlspecialchars_decode($post->content); ?></p>
         <div class="tag">
             @forelse($post->tags as $tag)
                 <span>{{$tag->name}}</span> 
