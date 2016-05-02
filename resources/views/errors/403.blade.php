@@ -40,7 +40,9 @@
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">404</div>
+                <div class="title">403</div>
+                                    <a href="{{url('/')}}">retour à l'accueil</a>
+
             </div>
         </div>
     </body>
